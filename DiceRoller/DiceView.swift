@@ -13,13 +13,14 @@ struct DiceView: View {
 
     @Binding var numberOfDice: Int
     @Binding var diceFaces: Int
-    @State var showingFace = Int.random(in: 1 ..< 4)
     @Binding var diceValues: [Int]
 
     @State private var offsetX: CGFloat = 0
     @State private var offsetY: CGFloat = 0
 
     @State private var angleValue: Angle = Angle(degrees: 0)
+
+    @ObservedObject var savedDice: SavedDice
 
     var body: some View {
         VStack {
@@ -41,7 +42,7 @@ struct DiceView: View {
                                                 Color.red
                                             }
                                         }
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .shadow(color: colorScheme == .dark ? .clear : .black.opacity(0.33), radius: 10, y: 10)
                                         .frame(width: 100, height: 100)
                                         .aspectRatio(CGSize(width: 1, height: 1), contentMode: .fit)
@@ -68,10 +69,10 @@ struct DiceView: View {
                     HStack {
                         // Histroy Button
                         Button {
-
+                            saveRolledDice()
                         } label: {
                             Image(systemName: "square.and.arrow.down.fill")
-                                .font(.largeTitle)
+                                .font(.title)
                                 .foregroundColor(.white)
                                 .padding()
                                 .background(colorScheme == .dark ? Color.gray.opacity(0.5) : Color.black.opacity(0.5))
@@ -84,8 +85,8 @@ struct DiceView: View {
                         Button {
                             rollDice()
                         } label: {
-                            Text("Roll")
-                                .font(.largeTitle.weight(.medium))
+                            Text("Roll Dice")
+                                .font(.title.weight(.medium))
                                 .foregroundColor(.white)
                                 .padding()
                                 .frame(maxWidth: 200)
@@ -100,7 +101,7 @@ struct DiceView: View {
                             dismiss()
                         } label: {
                             Image(systemName: "gear")
-                                .font(.largeTitle.weight(.bold))
+                                .font(.title.weight(.bold))
                                 .foregroundColor(.white)
                                 .padding()
                                 .background(colorScheme == .dark ? Color.gray.opacity(0.5) : Color.black.opacity(0.5))
@@ -147,6 +148,15 @@ struct DiceView: View {
                 }
             }
         }
+    }
+
+    func saveRolledDice() {
+        let newDice = Dice(numberOfDice: numberOfDice, diceFaces: diceFaces, diceValues: diceValues)
+
+        savedDice.rolledDice.append(newDice)
+        savedDice.saveDice()
+
+        print(savedDice.rolledDice.count)
     }
 }
 
