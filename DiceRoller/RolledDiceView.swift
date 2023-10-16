@@ -30,7 +30,7 @@ struct RolledDiceView: View {
                     List {
                         ForEach(savedDice.rolledDice) { dice in
                             NavigationLink {
-                                // details here
+                                RolledDiceDetailView(dice: dice)
                             } label: {
                                 HStack {
                                     Image(systemName: "dice.fill")

@@ -20,6 +20,8 @@ struct DiceView: View {
 
     @State private var angleValue: Angle = Angle(degrees: 0)
 
+    @State private var savedDiceAlert = false
+
     @ObservedObject var savedDice: SavedDice
 
     var body: some View {
@@ -96,7 +98,6 @@ struct DiceView: View {
 
                         Spacer()
 
-                        // Settings Button
                         Button {
                             dismiss()
                         } label: {
@@ -112,6 +113,10 @@ struct DiceView: View {
                     .shadow(color: colorScheme == .dark ? .clear : .black.opacity(0.33), radius: 10, y: 10)
                 }
             }
+        }
+        .alert("Dice saved", isPresented: $savedDiceAlert) {
+            Button("Roll again", role: .cancel) { }
+            Button("Back to settings") { dismiss() }
         }
     }
 
@@ -132,7 +137,7 @@ struct DiceView: View {
         print(diceValues)
 
 
-        /// Animation Property value changes
+        // Animation Property value changes
         withAnimation(.interpolatingSpring(stiffness: 300, damping: 2)) {
             offsetX = CGFloat.random(in: -30...30)
             offsetY = CGFloat.random(in: -100...100)
@@ -156,6 +161,7 @@ struct DiceView: View {
         savedDice.rolledDice.append(newDice)
         savedDice.saveDice()
 
+        savedDiceAlert = true
         print(savedDice.rolledDice.count)
     }
 }

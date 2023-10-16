@@ -21,7 +21,7 @@ struct ContentView: View {
 
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 50) {
                 VStack {
                     Text("How many dice do you want to roll?")
@@ -45,18 +45,6 @@ struct ContentView: View {
                     .pickerStyle(.segmented)
                 }
 
-                NavigationLink {
-                    RolledDiceView(savedDice: savedDice)
-                } label: {
-                    Text("My saved dice")
-                }
-                .font(.title.weight(.medium))
-                .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: 200)
-                .background(Color.blue)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-
                 Button {
                     diceValues = [Int](repeating: 1, count: diceFaces)
                     print(diceValues)
@@ -71,7 +59,15 @@ struct ContentView: View {
                 .background(Color.red)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
 
-
+                NavigationLink {
+                    RolledDiceView(savedDice: savedDice)
+                } label: {
+                    Text("Previous Rounds")
+                }
+                .font(.title3)
+                .padding()
+                .frame(maxWidth: 200)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
 
 
             }
