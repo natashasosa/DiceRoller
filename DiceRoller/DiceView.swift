@@ -9,10 +9,12 @@ import SwiftUI
 
 struct DiceView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) var dismiss
 
     @Binding var numberOfDice: Int
     @Binding var diceFaces: Int
-    @State private var diceValues: [Int] = [6, 6, 6, 6, 6, 6]
+    @State var showingFace = Int.random(in: 1 ..< 4)
+    @Binding var diceValues: [Int]
 
     @State private var offsetX: CGFloat = 0
     @State private var offsetY: CGFloat = 0
@@ -68,7 +70,7 @@ struct DiceView: View {
                         Button {
 
                         } label: {
-                            Image(systemName: "clock.arrow.circlepath")
+                            Image(systemName: "square.and.arrow.down.fill")
                                 .font(.largeTitle)
                                 .foregroundColor(.white)
                                 .padding()
@@ -95,7 +97,7 @@ struct DiceView: View {
 
                         // Settings Button
                         Button {
-
+                            dismiss()
                         } label: {
                             Image(systemName: "gear")
                                 .font(.largeTitle.weight(.bold))

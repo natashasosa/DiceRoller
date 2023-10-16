@@ -14,6 +14,8 @@ struct ContentView: View {
     @State private var numnberOfDiceRange = [1, 2, 3, 4, 5, 6]
     @State private var diceFaces: Int = 6
     @State private var diceFacesRange = [4, 6, 8, 12, 20]
+    @State private var diceValues: [Int] = []
+    @State private var showingDiceView = false
 
 
     var body: some View {
@@ -41,13 +43,24 @@ struct ContentView: View {
                         }
                         .pickerStyle(.segmented)
                     }
+
+
+                    Button {
+                        diceValues = [Int](repeating: 1, count: diceFaces)
+                        print(diceValues)
+                        showingDiceView = true
+                    } label: {
+                        Text("Start")
+                    }
                 }
 
-                Spacer()
 
-                NavigationLink("Start", destination: DiceView(numberOfDice: $numberOfDice, diceFaces: $diceFaces))
+
             }
             .navigationTitle("Select your dice")
+            .sheet(isPresented: $showingDiceView) {
+                DiceView(numberOfDice: $numberOfDice, diceFaces: $diceFaces, diceValues: $diceValues)
+            }
         }
     }
 }
